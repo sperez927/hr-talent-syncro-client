@@ -4,7 +4,7 @@ import freelance from "../../assets/freelance.jpg"
 
 const Services = () => {
     return (
-        <div className=" grid grid-cols-3 gap-3 font-bold">
+        <div className=" grid grid-cols-1 lg:grid-cols-3 gap-3 font-bold">
             <div className=" bg-cover bg-center  border shadow-lg" style={{ backgroundImage: `url(${skills})`, }}>
                 <div className="h-full w-full p-4 bg-black bg-opacity-40 text-white space-y-4">
                     <h1 className=" text-xl">Skill Development and Certification Programs</h1>
