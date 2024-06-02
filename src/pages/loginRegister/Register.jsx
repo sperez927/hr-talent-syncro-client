@@ -51,7 +51,8 @@ const Register = () => {
     }
 
     const onSubmit = async (data) => {
-        const { name, email, password, photo } = data;
+        const { name, email, password
+            , photo } = data;
 
         if (password.length < 6) {
             setErrorMessage("Password must be at least 6 characters long");
