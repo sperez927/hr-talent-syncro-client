@@ -17,8 +17,8 @@ const MySwal = withReactContent(Swal);
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 
 const Register = () => {
-    const { userRegistration, googleSignIn, githubSignIn, updateUserProfile, socialLogin } = useContext(AuthContext);
-    const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm();
+    const { userRegistration, googleSignIn, githubSignIn, updateUserProfile } = useContext(AuthContext);
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [showPass, setShowPass] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const location = useLocation();
@@ -51,7 +51,7 @@ const Register = () => {
     }
 
     const onSubmit = async (data) => {
-        const { name, email, password, role, bank_account_no, salary, designation, photo } = data;
+        const { name, email, password, photo } = data;
 
         if (password.length < 6) {
             setErrorMessage("Password must be at least 6 characters long");
@@ -70,6 +70,7 @@ const Register = () => {
                 const photoUrl = imgbbResponse.data.data.url;
 
                 const result = await userRegistration(email, password);
+                console.log(result);
                 await updateUserProfile(name, photoUrl);
 
                 MySwal.fire({
