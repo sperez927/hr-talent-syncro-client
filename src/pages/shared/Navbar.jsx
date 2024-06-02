@@ -143,7 +143,6 @@ const Navbar = () => {
                                 </div>
                                 <ul tabIndex={0} className="dropdown-content dark:bg-[#292929] dark:border dark:border-primary dark:text-white z-[50] menu p-3 shadow bg-base-100 rounded w-44 space-y-2">
                                     <li className=" font-bold text-lg">{user.displayName}</li>
-                                    <Link to={'/myAttemptedAssignments'}><li className=" border-b border-primary py-1">My Attempts</li></Link>
                                     <li><button onClick={handleUserLogout} className="bg-primary text-white py-1 px-4 rounded hover:bg-transparent hover:outline hover:outline-1 hover:outline-primary hover:text-primary transition duration-300 ease-in-out">
                                         Logout
                                     </button></li>
