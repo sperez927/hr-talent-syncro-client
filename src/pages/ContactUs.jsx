@@ -11,7 +11,8 @@ const ContactUs = () => {
 
     const onSubmit = async (data) => {
         try {
-            await axios.post('/api/contact', data);
+            // TODO
+            await axios.post('/', data);
 
             MySwal.fire({
                 title: 'Message Sent!',
