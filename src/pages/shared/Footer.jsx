@@ -6,7 +6,7 @@ import logo from "../../assets/logo.png"
 const Footer = () => {
 
     return (
-        <div className="py-10 mt-16 font-semibold bg-transparent">
+        <div className=" text-black py-10 mt-16 font-semibold bg-transparent">
             <div className="flex flex-col md:items-start items-center">
                     <img src={logo} className="font-bold text-3xl w-56" alt="Logo"></img>
                     <p className="text-lg mt-2">Innovative. Empowering. Support.</p>

@@ -11,7 +11,7 @@ import people3 from "../../assets/people3.jpg"
 
 const Testimonials = () => {
     return (
-        <div className=' bg-gray-300 p-10 md:p-20'>
+        <div className=' bg-gray-300 p-10 md:p-20 text-black'>
             <Swiper
                 modules={[Navigation, A11y, Pagination, Autoplay]}
                 spaceBetween={50}
