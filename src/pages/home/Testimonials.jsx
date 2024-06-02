@@ -11,14 +11,12 @@ import people3 from "../../assets/people3.jpg"
 
 const Testimonials = () => {
     return (
-        <div>
+        <div className=' bg-gray-300 p-20'>
             <Swiper
                 modules={[Navigation, A11y, Pagination, Autoplay]}
                 spaceBetween={50}
                 slidesPerView={1}
-                navigation
                 autoplay={{ delay: 10000 }}
-                pagination={{ clickable: true }}
             >
                 <SwiperSlide >
                     <div className=' grid grid-cols-3 gap-4 items-center justify-center'>
