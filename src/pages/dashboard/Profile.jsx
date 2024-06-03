@@ -1,6 +1,6 @@
 
 
-const Dashboard = () => {
+const Profile = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Profile;

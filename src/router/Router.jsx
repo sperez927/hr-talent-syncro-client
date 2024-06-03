@@ -5,9 +5,9 @@ import Error from "../pages/Error";
 import Home from "../pages/home/Home";
 import Login from "../pages/loginRegister/Login";
 import Register from "../pages/loginRegister/Register";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/dashboard/Dashboard";
 import ContactUs from "../pages/ContactUs";
-import WorkSheet from "../pages/dashboard/WorkSheet";
+import Profile from "../pages/dashboard/Profile";
 
 
 const Router = createBrowserRouter([
@@ -29,18 +29,21 @@ const Router = createBrowserRouter([
                 element: <Register></Register>,
             },
             {
-                path: '/dashboard',
-                element: <PrivateRouter><Dashboard></Dashboard></PrivateRouter>,
-            },
-            {
                 path: '/contact-us',
                 element: <ContactUs></ContactUs>,
             },
         ]
     },
     {
-        path: '/work-sheet',
-        element: <WorkSheet></WorkSheet>,
+        path: '/dashboard',
+        element: <PrivateRouter><Dashboard></Dashboard></PrivateRouter>,
+        errorElement: <Error></Error>,
+        children: [
+            {
+                path: '/dashboard',
+                element: <Profile></Profile>,
+            },
+        ]
     },
 ])
 
