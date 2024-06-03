@@ -12,6 +12,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { BASE_URL } from "../../constent/constent";
 
 const MySwal = withReactContent(Swal);
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -35,7 +36,7 @@ const Register = () => {
                 console.log(error);
                 toast.error('Incorrect User Input');
             })
-    }
+    };
 
     const handleGithubSignIn = () => {
         githubSignIn()
@@ -48,12 +49,13 @@ const Register = () => {
                 console.log(error);
                 toast.error('Incorrect User Input');
             })
-    }
+    };
 
     const onSubmit = async (data) => {
-        const { name, email, password
-            , photo } = data;
-
+        const { name, email, password, photo, salary } = data;
+    
+        console.log("Salary Input:", salary);
+    
         if (password.length < 6) {
             setErrorMessage("Password must be at least 6 characters long");
         } else if (!password.match(/[a-z]/)) {
@@ -66,35 +68,55 @@ const Register = () => {
             try {
                 const formData = new FormData();
                 formData.append('image', photo[0]);
-
+    
                 const imgbbResponse = await axios.post(`https://api.imgbb.com/1/upload?key=${image_hosting_key}`, formData);
                 const photoUrl = imgbbResponse.data.data.url;
-
+    
                 const result = await userRegistration(email, password);
                 console.log(result);
                 await updateUserProfile(name, photoUrl);
-
+    
+                const newUser = {
+                    name,
+                    email,
+                    password,
+                    photoUrl,
+                    role: data.role,
+                    bank_account_no: data.bank_account_no,
+                    salary: parseFloat(salary),  
+                    designation: data.designation
+                };
+    
+                console.log("New User Data:", newUser);
+    
+                await axios.post(BASE_URL + '/user', newUser, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+    
                 MySwal.fire({
-                    title: <p className="text-3xl font-bold text-primary mb-4">Welcome Buddy!</p>,
+                    title: <p className="text-3xl font-bold text-primary mb-4">Welcome to Talent Syncro!</p>,
                     html: (
                         <div className="text-lg">
                             <p>You have successfully registered.</p>
-                            <p>Thank you for registering. You are now a part of our study group now!</p>
+                            <p>Thank you for registering. You are now a part of our team now!</p>
                         </div>
                     ),
                     icon: "success",
-                    confirmButtonColor: 'lime',
+                    confirmButtonColor: 'green',
                     confirmButtonText: "Let's get started!"
                 }).then(() => {
                     navigate(location?.state ? location.state : "/");
                 });
             } catch (error) {
                 console.log(error);
-                setErrorMessage("Registration failed. Please try again.");
+                toast.error("Registration failed. Please try again.");
             }
         }
         console.log(data);
     };
+    
 
     return (
         <>
@@ -146,7 +168,7 @@ const Register = () => {
                             <label className="label">
                                 <span className="label-text font-bold ">Bank Account Number</span>
                             </label>
-                            <input name="bank_account_no" type="text" placeholder="Enter your bank account number" className="bg-transparent input rounded-none border-b-2 border-b-gray-300 focus:outline-none focus:border-0 focus:border-b-2 focus:border-b-primary" {...register("bank_account_no", { required: true })} />
+                            <input name="bank_account_no" type="number" placeholder="Enter your bank account number" className="bg-transparent input rounded-none border-b-2 border-b-gray-300 focus:outline-none focus:border-0 focus:border-b-2 focus:border-b-primary" {...register("bank_account_no", { required: true })} />
                             {errors.bank_account_no && <span className="text-red-500">This field is required</span>}
                         </div>
                         <div className="form-control">
