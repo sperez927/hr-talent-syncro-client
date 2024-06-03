@@ -8,54 +8,28 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Helmet } from "react-helmet-async";
 import axios from 'axios';
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { BASE_URL } from "../../constent/constent";
+import SocialLogin from "./SocialLogin";
 
 const MySwal = withReactContent(Swal);
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 
 const Register = () => {
-    const { userRegistration, googleSignIn, githubSignIn, updateUserProfile } = useContext(AuthContext);
+    const { userRegistration, updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [showPass, setShowPass] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const location = useLocation();
     const navigate = useNavigate();
 
-    const handleGoogleSignIn = () => {
-        googleSignIn()
-            .then(result => {
-                console.log(result);
-                toast.success('Successfully Logged In');
-                navigate(location?.state ? location.state : "/");
-            })
-            .catch(error => {
-                console.log(error);
-                toast.error('Incorrect User Input');
-            })
-    };
-
-    const handleGithubSignIn = () => {
-        githubSignIn()
-            .then(result => {
-                console.log(result);
-                toast.success('Successfully Logged In');
-                navigate(location?.state ? location.state : "/");
-            })
-            .catch(error => {
-                console.log(error);
-                toast.error('Incorrect User Input');
-            })
-    };
 
     const onSubmit = async (data) => {
         const { name, email, password, photo, salary } = data;
-    
+
         console.log("Salary Input:", salary);
-    
+
         if (password.length < 6) {
             setErrorMessage("Password must be at least 6 characters long");
         } else if (!password.match(/[a-z]/)) {
@@ -68,14 +42,14 @@ const Register = () => {
             try {
                 const formData = new FormData();
                 formData.append('image', photo[0]);
-    
+
                 const imgbbResponse = await axios.post(`https://api.imgbb.com/1/upload?key=${image_hosting_key}`, formData);
                 const photoUrl = imgbbResponse.data.data.url;
-    
+
                 const result = await userRegistration(email, password);
                 console.log(result);
                 await updateUserProfile(name, photoUrl);
-    
+
                 const newUser = {
                     name,
                     email,
@@ -83,18 +57,18 @@ const Register = () => {
                     photoUrl,
                     role: data.role,
                     bank_account_no: data.bank_account_no,
-                    salary: parseFloat(salary),  
+                    salary: parseFloat(salary),
                     designation: data.designation
                 };
-    
+
                 console.log("New User Data:", newUser);
-    
+
                 await axios.post(BASE_URL + '/user', newUser, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
-    
+
                 MySwal.fire({
                     title: <p className="text-3xl font-bold text-primary mb-4">Welcome to Talent Syncro!</p>,
                     html: (
@@ -116,7 +90,7 @@ const Register = () => {
         }
         console.log(data);
     };
-    
+
 
     return (
         <>
@@ -202,13 +176,7 @@ const Register = () => {
                         <div className="form-control mt-6">
                             <button className="btn text-white bg-primary hover:bg-transparent hover:border hover:border-primary hover:text-primary transition duration-300 ease-in-out">Register</button>
                         </div>
-                        <div className=" m-6 space-y-4">
-                            <p className=" text-center">Or Sign In Using</p>
-                            <span className="flex justify-center items-center gap-2">
-                                <button onClick={handleGoogleSignIn}><FcGoogle size={45} /></button>
-                                <button onClick={handleGithubSignIn}><FaGithub size={40} /></button>
-                            </span>
-                        </div>
+                        <SocialLogin></SocialLogin>
                         <p className="mt-3 text-center">Already Have An Account? <Link className="text-red-500" to={'/login'}>Login</Link></p>
                     </form>
                 </div>
