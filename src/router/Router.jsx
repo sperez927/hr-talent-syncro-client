@@ -7,9 +7,10 @@ import Login from "../pages/loginRegister/Login";
 import Register from "../pages/loginRegister/Register";
 import Dashboard from "../pages/Dashboard";
 import ContactUs from "../pages/ContactUs";
+import WorkSheet from "../pages/dashboard/WorkSheet";
 
 
-const Router = createBrowserRouter ([
+const Router = createBrowserRouter([
     {
         path: '/',
         element: <Root></Root>,
@@ -36,7 +37,11 @@ const Router = createBrowserRouter ([
                 element: <ContactUs></ContactUs>,
             },
         ]
-    }
+    },
+    {
+        path: '/work-sheet',
+        element: <WorkSheet></WorkSheet>,
+    },
 ])
 
 export default Router;
