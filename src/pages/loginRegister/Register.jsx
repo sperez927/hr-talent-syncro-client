@@ -53,7 +53,6 @@ const Register = () => {
                 const newUser = {
                     name,
                     email,
-                    password,
                     photoUrl,
                     role: data.role,
                     bank_account_no: data.bank_account_no,
