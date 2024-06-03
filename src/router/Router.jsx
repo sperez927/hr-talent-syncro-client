@@ -8,7 +8,7 @@ import Register from "../pages/loginRegister/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
 import ContactUs from "../pages/ContactUs";
 import Profile from "../pages/dashboard/Profile";
-
+import WorkSheet from "../pages/dashboard/WorkSheet";
 
 const Router = createBrowserRouter([
     {
@@ -42,6 +42,10 @@ const Router = createBrowserRouter([
             {
                 path: '/dashboard',
                 element: <Profile></Profile>,
+            },
+            {
+                path: '/dashboard/work-sheet',
+                element: <WorkSheet></WorkSheet>,
             },
         ]
     },
