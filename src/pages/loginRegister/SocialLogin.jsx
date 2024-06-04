@@ -26,6 +26,7 @@ const SocialLogin = () => {
                     bank_account_no: null,
                     salary: null,
                     designation: null,
+                    isVerified: false,
                 };
 
                 console.log("New User Data:", newUser);
@@ -58,6 +59,7 @@ const SocialLogin = () => {
                     bank_account_no: null,
                     salary: null,
                     designation: null,
+                    isVerified: false,
                 };
 
                 console.log("New User Data:", newUser);

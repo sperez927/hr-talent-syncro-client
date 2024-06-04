@@ -58,7 +58,8 @@ const Register = () => {
                     role: data.role,
                     bank_account_no: data.bank_account_no,
                     salary: parseFloat(salary),
-                    designation: data.designation
+                    designation: data.designation,
+                    isVerified: false,
                 };
 
                 console.log("New User Data:", newUser);

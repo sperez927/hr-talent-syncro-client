@@ -9,6 +9,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import ContactUs from "../pages/ContactUs";
 import Profile from "../pages/dashboard/Profile";
 import WorkSheet from "../pages/dashboard/WorkSheet";
+import EmployeeTable from "../pages/dashboard/EmployeeTable";
 
 const Router = createBrowserRouter([
     {
@@ -47,6 +48,11 @@ const Router = createBrowserRouter([
                 path: '/dashboard/work-sheet',
                 element: <WorkSheet></WorkSheet>,
             },
+            {
+                path: '/dashboard/employee-list',
+                element: <EmployeeTable></EmployeeTable>,
+            },
+            
         ]
     },
 ])
