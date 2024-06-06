@@ -10,6 +10,7 @@ import ContactUs from "../pages/ContactUs";
 import Profile from "../pages/dashboard/Profile";
 import WorkSheet from "../pages/dashboard/WorkSheet";
 import EmployeeList from "../pages/dashboard/EmployeeList";
+import HRRouter from "./HRRouter";
 
 const Router = createBrowserRouter([
     {
@@ -42,15 +43,15 @@ const Router = createBrowserRouter([
         children: [
             {
                 path: '/dashboard',
-                element: <Profile></Profile>,
+                element: <PrivateRouter><Profile></Profile></PrivateRouter>,
             },
             {
                 path: '/dashboard/work-sheet',
-                element: <WorkSheet></WorkSheet>,
+                element: <PrivateRouter><WorkSheet></WorkSheet></PrivateRouter>,
             },
             {
                 path: '/dashboard/employee-list',
-                element: <EmployeeList></EmployeeList>,
+                element: <HRRouter><EmployeeList></EmployeeList></HRRouter>,
             },
             
         ]
