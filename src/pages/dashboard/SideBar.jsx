@@ -25,7 +25,7 @@ const SideBar = () => {
         }
     }, [user, axiosPrivate]);
 
-    console.log(currUser);
+
 
     return (
         <div className=" space-y-10 h-screen flex flex-col justify-between bg-primary py-6 pl-10 text-white">

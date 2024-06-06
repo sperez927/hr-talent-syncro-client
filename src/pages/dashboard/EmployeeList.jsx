@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
+
 const EmployeeList = () => {
     const axiosPrivate = useAxiosPrivate();
     const [employees, setEmployees] = useState([]);
@@ -55,6 +56,17 @@ const EmployeeList = () => {
                 const month = paymentDate.getMonth() + 1;
                 const year = paymentDate.getFullYear();
                 console.log(`Paying ${selectedEmployee.name} for ${month}/${year}`);
+
+                const paymentInfo = {
+                    employeeId: selectedEmployee._id,
+                    employeeName: selectedEmployee.name,
+                    employeeEmail: selectedEmployee.email,
+                    employeeSalary: selectedEmployee.salary,
+                    data: paymentDate,
+                }
+                console.log(paymentInfo);
+
+                axiosPrivate.post('/payment', paymentInfo );
 
                 setShowPayModal(false);
             } catch (error) {
@@ -114,23 +126,23 @@ const EmployeeList = () => {
                 <Dialog
                     visible={showPayModal}
                     onHide={closePayModal}
-                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' , width: '70%', height: '50%'}}
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', width: '70%', height: '50%' }}
                 >
                     <div className=' w-full h-full flex justify-center items-center'>
-                    <div className="p-10 text-center text-xl">
-                        <h4 className="text-white text-3xl font-bold mb-4">Pay Employee</h4>
-                        <p className="text-white mb-2">Employee: {selectedEmployee && selectedEmployee.name}</p>
-                        <p className="text-white mb-4">Salary: {selectedEmployee && selectedEmployee.salary}</p>
-                        <DatePicker
-                            selected={paymentDate}
-                            onChange={(date) => setPaymentDate(date)}
-                            showMonthYearPicker
-                            dateFormat="MM/yyyy"
-                            className="mb-4 py-2 px-10 text-center rounded w-full"
-                            placeholderText="Select Month and Year"
-                        />
-                        <Button label="Pay" onClick={handlePay} className="bg-primary text-white w-full py-2 rounded" />
-                    </div>
+                        <div className="p-10 text-center text-xl">
+                            <h4 className="text-white text-3xl font-bold mb-4">Pay Employee</h4>
+                            <p className="text-white mb-2">Employee: {selectedEmployee && selectedEmployee.name}</p>
+                            <p className="text-white mb-4">Salary: {selectedEmployee && selectedEmployee.salary}</p>
+                            <DatePicker
+                                selected={paymentDate}
+                                onChange={(date) => setPaymentDate(date)}
+                                showMonthYearPicker
+                                dateFormat="MM/yyyy"
+                                className="mb-4 py-2 px-10 text-center rounded w-full"
+                                placeholderText="Select Month and Year"
+                            />
+                            <Button label="Pay" onClick={handlePay} className="bg-primary text-white w-full py-2 rounded" />
+                        </div>
                     </div>
                 </Dialog>
             </div>
