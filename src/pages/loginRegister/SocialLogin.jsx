@@ -5,10 +5,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-import axios from "axios";
-import { BASE_URL } from "../../constent/constent";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SocialLogin = () => {
+    const axiosPublic = useAxiosPublic();
     const { googleSignIn, githubSignIn } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ const SocialLogin = () => {
 
                 console.log("New User Data:", newUser);
 
-                axios.post(BASE_URL + '/user', newUser, {
+                axiosPublic.post('/user', newUser, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -64,7 +64,7 @@ const SocialLogin = () => {
 
                 console.log("New User Data:", newUser);
 
-                axios.post(BASE_URL + '/user', newUser, {
+                axiosPublic.post('/user', newUser, {
                     headers: {
                         'Content-Type': 'application/json'
                     }

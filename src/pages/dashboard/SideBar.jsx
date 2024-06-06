@@ -1,11 +1,31 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
 const SideBar = () => {
     const { user, userLogout } = useContext(AuthContext);
+    const axiosPrivate = useAxiosPrivate();
+    const [currUser, setCurrUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axiosPrivate.get(`/user/${user?.email}`);
+                setCurrUser(response.data);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        if (user?.email) {
+            fetchUser();
+        }
+    }, [user, axiosPrivate]);
+
+    console.log(currUser);
 
     return (
         <div className=" space-y-10 h-screen flex flex-col justify-between bg-primary py-6 pl-10 text-white">
@@ -15,11 +35,20 @@ const SideBar = () => {
                     <img className=" w-20 h-20 rounded-full object-cover object-top" src={user?.photoURL} alt="" />
                     <h1 className=" font-semibold">{user?.displayName}</h1>
                 </div>
-                <div className=" flex flex-col gap-6 text-xl font-semibold">
-                    <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
-                    <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
-                    <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/work-sheet'}>Work Sheet</Link>
-                </div>
+                {
+                    currUser?.role === 'HR'
+                        ?
+                        <div className=" flex flex-col gap-6 text-xl font-semibold">
+                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
+                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
+                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/employee-list'}>Employee List</Link>
+                        </div>
+                        : <div className=" flex flex-col gap-6 text-xl font-semibold">
+                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
+                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
+                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/work-sheet'}>Work Sheet</Link>
+                        </div>
+                }
             </div>
             <button onClick={userLogout} className=" self-end pr-5 flex gap-3 items-center text-xl font-semibold">
                 Sign Out <IoIosLogOut size={25} />

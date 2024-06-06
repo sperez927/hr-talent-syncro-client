@@ -7,16 +7,16 @@ import loginReg from "../../assets/loginReg.jpg";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Helmet } from "react-helmet-async";
-import axios from 'axios';
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { BASE_URL } from "../../constent/constent";
 import SocialLogin from "./SocialLogin";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const MySwal = withReactContent(Swal);
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 
 const Register = () => {
+    const axiosPublic = useAxiosPublic();
     const { userRegistration, updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [showPass, setShowPass] = useState(false);
@@ -43,7 +43,7 @@ const Register = () => {
                 const formData = new FormData();
                 formData.append('image', photo[0]);
 
-                const imgbbResponse = await axios.post(`https://api.imgbb.com/1/upload?key=${image_hosting_key}`, formData);
+                const imgbbResponse = await axiosPublic.post(`https://api.imgbb.com/1/upload?key=${image_hosting_key}`, formData);
                 const photoUrl = imgbbResponse.data.data.url;
 
                 const result = await userRegistration(email, password);
@@ -64,7 +64,7 @@ const Register = () => {
 
                 console.log("New User Data:", newUser);
 
-                await axios.post(BASE_URL + '/user', newUser, {
+                await axiosPublic.post('/user', newUser, {
                     headers: {
                         'Content-Type': 'application/json'
                     }

@@ -9,7 +9,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import ContactUs from "../pages/ContactUs";
 import Profile from "../pages/dashboard/Profile";
 import WorkSheet from "../pages/dashboard/WorkSheet";
-import EmployeeTable from "../pages/dashboard/EmployeeTable";
+import EmployeeList from "../pages/dashboard/EmployeeList";
 
 const Router = createBrowserRouter([
     {
@@ -50,7 +50,7 @@ const Router = createBrowserRouter([
             },
             {
                 path: '/dashboard/employee-list',
-                element: <EmployeeTable></EmployeeTable>,
+                element: <EmployeeList></EmployeeList>,
             },
             
         ]

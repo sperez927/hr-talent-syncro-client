@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { BASE_URL } from '../../constent/constent';
-import axios from 'axios';
 import { AuthContext } from '../../provider/AuthProvider';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const WorkSheet = () => {
+    const axiosPrivate = useAxiosPrivate();
     const { user } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, setValue } = useForm({
         defaultValues: {
@@ -18,7 +18,7 @@ const WorkSheet = () => {
 
     const fetchWorkEntries = async () => {
         if (user?.uid) {
-            const response = await axios.get(BASE_URL + `/work-sheet/${user.uid}`, {
+            const response = await axiosPrivate.get(`/work-sheet/${user.uid}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -36,7 +36,7 @@ const WorkSheet = () => {
             date: selectedDate,
         };
 
-        await axios.post(BASE_URL + '/work-sheet', newWorkEntry, {
+        await axiosPrivate.post('/work-sheet', newWorkEntry, {
             headers: {
                 'Content-Type': 'application/json'
             }
