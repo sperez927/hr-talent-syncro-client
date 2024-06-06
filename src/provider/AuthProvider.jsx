@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 
 export const AuthContext = createContext(null);
@@ -11,6 +12,8 @@ const githubProvider = new GithubAuthProvider();
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const axiosPrivate = useAxiosPrivate();
+    const [currUser, setCurrUser] = useState(null);
 
     const googleSignIn = () => {
         // setLoading(true);
@@ -65,8 +68,26 @@ const AuthProvider = ({ children }) => {
         };
     }, []);
 
+
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axiosPrivate.get(`/user/${user?.email}`);
+                setCurrUser(response.data);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        if (user?.email) {
+            fetchUser();
+        }
+
+    }, [user, axiosPrivate]);
+
     const authInfo = {
-        user, loading, updateUserProfile, setLoading, googleSignIn, githubSignIn, userRegistration, userLogin, userLogout,
+        user, currUser, loading, updateUserProfile, setLoading, googleSignIn, githubSignIn, userRegistration, userLogin, userLogout,
     }
 
     return (
