@@ -1,29 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
 const SideBar = () => {
-    const { user, userLogout } = useContext(AuthContext);
-    const axiosPrivate = useAxiosPrivate();
-    const [currUser, setCurrUser] = useState(null);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await axiosPrivate.get(`/user/${user?.email}`);
-                setCurrUser(response.data);
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-        };
-
-        if (user?.email) {
-            fetchUser();
-        }
-    }, [user, axiosPrivate]);
+    const { user, currUser, userLogout } = useContext(AuthContext);
 
 
 

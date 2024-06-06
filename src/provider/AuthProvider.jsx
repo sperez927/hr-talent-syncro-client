@@ -3,11 +3,9 @@ import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
-
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -16,52 +14,46 @@ const AuthProvider = ({ children }) => {
     const [currUser, setCurrUser] = useState(null);
 
     const googleSignIn = () => {
-        // setLoading(true);
-        return signInWithPopup(auth, googleProvider)
-    }
+        return signInWithPopup(auth, googleProvider);
+    };
+
     const githubSignIn = () => {
-        // setLoading(true);
-        return signInWithPopup(auth, githubProvider)
-    }
+        return signInWithPopup(auth, githubProvider);
+    };
 
     const userRegistration = (email, password) => {
-        // setLoading(true);
-        return createUserWithEmailAndPassword(auth, email, password)
-    }
+        return createUserWithEmailAndPassword(auth, email, password);
+    };
 
     const userLogin = (email, password) => {
-        // setLoading(true);
-        return signInWithEmailAndPassword(auth, email, password)
-    }
+        return signInWithEmailAndPassword(auth, email, password);
+    };
 
     const userLogout = () => {
-        return signOut(auth)
-    }
+        return signOut(auth);
+    };
 
     const updateUserProfile = (name, photoUrl) => {
-        // setLoading(true);
         return updateProfile(auth.currentUser, {
             displayName: name,
-            photoURL: photoUrl
+            photoURL: photoUrl,
         }).then(() => {
-            setUser(currentUser => ({
+            setUser((currentUser) => ({
                 ...currentUser,
                 displayName: name,
                 photoURL: photoUrl,
                 email: auth.currentUser.email,
-            }))
-                .then(() => {
-                    setLoading(false);
-                })
-        }).catch(error => {
+            }));
+            setLoading(false);
+        }).catch((error) => {
             console.log("Error updating profile: ", error);
         });
-    }
+    };
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
-            setLoading(false);
+            fetchUser();
         });
         return () => {
             unSubscribe();
@@ -69,26 +61,35 @@ const AuthProvider = ({ children }) => {
     }, []);
 
 
+    const fetchUser = async () => {
+        try {
+            const response = await axiosPrivate.get(`/user/${user?.email}`);
+            setCurrUser(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await axiosPrivate.get(`/user/${user?.email}`);
-                setCurrUser(response.data);
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-        };
 
         if (user?.email) {
             fetchUser();
         }
-
     }, [user, axiosPrivate]);
 
     const authInfo = {
-        user, currUser, loading, updateUserProfile, setLoading, googleSignIn, githubSignIn, userRegistration, userLogin, userLogout,
-    }
+        user,
+        currUser,
+        loading,
+        updateUserProfile,
+        setLoading,
+        googleSignIn,
+        githubSignIn,
+        userRegistration,
+        userLogin,
+        userLogout,
+    };
 
     return (
         <AuthContext.Provider value={authInfo}>
