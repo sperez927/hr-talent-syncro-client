@@ -114,10 +114,11 @@ const EmployeeList = () => {
                 <Dialog
                     visible={showPayModal}
                     onHide={closePayModal}
-                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' , width: '70%', height: '50%'}}
                 >
-                    <div className="p-4">
-                        <h4 className="text-white mb-4">Pay Employee</h4>
+                    <div className=' w-full h-full flex justify-center items-center'>
+                    <div className="p-10 text-center text-xl">
+                        <h4 className="text-white text-3xl font-bold mb-4">Pay Employee</h4>
                         <p className="text-white mb-2">Employee: {selectedEmployee && selectedEmployee.name}</p>
                         <p className="text-white mb-4">Salary: {selectedEmployee && selectedEmployee.salary}</p>
                         <DatePicker
@@ -125,10 +126,11 @@ const EmployeeList = () => {
                             onChange={(date) => setPaymentDate(date)}
                             showMonthYearPicker
                             dateFormat="MM/yyyy"
-                            className="mb-4 p-2 rounded w-full"
+                            className="mb-4 py-2 px-10 text-center rounded w-full"
                             placeholderText="Select Month and Year"
                         />
-                        <Button label="Pay" onClick={handlePay} className="bg-primary text-white w-full" />
+                        <Button label="Pay" onClick={handlePay} className="bg-primary text-white w-full py-2 rounded" />
+                    </div>
                     </div>
                 </Dialog>
             </div>
