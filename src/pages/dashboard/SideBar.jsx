@@ -29,6 +29,7 @@ const SideBar = () => {
                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/work-sheet'}>Work Sheet</Link>
+                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/payment-history'}>Payment History</Link>
                         </div>
                 }
             </div>

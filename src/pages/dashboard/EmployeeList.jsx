@@ -34,7 +34,7 @@ const EmployeeList = () => {
         try {
             const updatedEmployee = { ...employee, isVerified: !employee.isVerified };
 
-            await axiosPrivate.put(+ '/user/' + employee._id, updatedEmployee);
+            await axiosPrivate.put('/user/' + employee._id, updatedEmployee);
 
             setEmployees(employees.map(emp => emp._id === employee._id ? updatedEmployee : emp));
         } catch (error) {
@@ -62,7 +62,7 @@ const EmployeeList = () => {
                     employeeName: selectedEmployee.name,
                     employeeEmail: selectedEmployee.email,
                     employeeSalary: selectedEmployee.salary,
-                    data: paymentDate,
+                    date: paymentDate,
                 }
                 console.log(paymentInfo);
 

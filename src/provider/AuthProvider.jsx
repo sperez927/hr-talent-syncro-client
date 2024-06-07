@@ -50,31 +50,34 @@ const AuthProvider = ({ children }) => {
         });
     };
 
-    useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            fetchUser();
-        });
-        return () => {
-            unSubscribe();
-        };
-    }, []);
-
-
-    const fetchUser = async () => {
+    const fetchUser = async (email) => {
         try {
-            const response = await axiosPrivate.get(`/user/${user?.email}`);
+            const response = await axiosPrivate.get(`/user/${email}`);
             setCurrUser(response.data);
-            setLoading(false);
         } catch (error) {
             console.error("Error fetching user data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+            if (currentUser?.email) {
+                fetchUser(currentUser.email);
+            } else {
+                setLoading(false);
+            }
+        });
+        return () => {
+            unSubscribe();
+        };
+    }, [axiosPrivate]);
 
+    useEffect(() => {
         if (user?.email) {
-            fetchUser();
+            fetchUser(user.email);
         }
     }, [user, axiosPrivate]);
 
