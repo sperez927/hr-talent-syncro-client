@@ -7,9 +7,7 @@ const EmployeeDetails = () => {
     const { email } = useParams();
     const axiosPrivate = useAxiosPrivate();
     const [userInfo, setUserInfo] = useState(null);
-    const [userPaymentInfo, setUserPaymentInfo] = useState(null);
-
-    console.log(userInfo, userPaymentInfo);
+    const [userPaymentInfo, setUserPaymentInfo] = useState([]);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -43,8 +41,6 @@ const EmployeeDetails = () => {
 
     const transformPaymentData = (paymentData) => {
         if (!paymentData) return [];
-
-        console.log('Transforming payment data:', paymentData);
 
         return paymentData.map(item => {
             const date = new Date(item.date);
