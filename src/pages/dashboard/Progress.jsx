@@ -14,10 +14,8 @@ const Progress = () => {
                 if (name) params.name = name;
                 if (month) params.month = month;
 
-                console.log("Fetching with params:", params);
-
                 const response = await axiosPrivate.get('/work-sheet', { params });
-                console.log("Response data:", response.data);
+
                 setWorklist(response.data);
             } catch (error) {
                 console.error("Failed to fetch work list:", error);
