@@ -8,6 +8,7 @@ import { RxCross2 } from "react-icons/rx";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { Link } from 'react-router-dom';
 
 
 const EmployeeList = () => {
@@ -66,7 +67,7 @@ const EmployeeList = () => {
                 }
                 console.log(paymentInfo);
 
-                axiosPrivate.post('/payment', paymentInfo );
+                axiosPrivate.post('/payment', paymentInfo);
 
                 setShowPayModal(false);
             } catch (error) {
@@ -105,7 +106,11 @@ const EmployeeList = () => {
     };
 
     const detailsButtonTemplate = (rowData) => {
-        return <Button label="Details" onClick={() => handleDetails(rowData)} />;
+        return (
+            <Link to={`/dashboard/employee-details/${rowData?.email}`}>
+                <Button label="Details" onClick={() => handleDetails(rowData)} />
+            </Link>
+        )
     };
 
     return (
