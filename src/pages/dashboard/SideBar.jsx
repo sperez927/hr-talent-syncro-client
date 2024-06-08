@@ -10,7 +10,7 @@ const SideBar = () => {
 
 
     return (
-        <div className=" space-y-10 h-screen flex flex-col justify-between bg-primary py-6 pl-10 text-white">
+        <div className=" space-y-10 min-h-screen h-fit flex flex-col justify-between bg-primary py-6 pl-10 text-white">
             <div className="space-y-10 ">
                 <h1 className=" text-2xl font-bold underline">Talent Syncro</h1>
                 <div className=" flex items-center gap-3">
