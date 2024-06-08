@@ -18,20 +18,27 @@ const SideBar = () => {
                     <h1 className=" font-semibold">{user?.displayName}</h1>
                 </div>
                 {
-                    currUser?.role === 'HR'
-                        ?
+                    currUser?.role === 'HR' ?
                         <div className=" flex flex-col gap-6 text-xl font-semibold">
                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/employee-list'}>Employee List</Link>
                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/progress'}>Progress</Link>
                         </div>
-                        : <div className=" flex flex-col gap-6 text-xl font-semibold">
-                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
-                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
-                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/work-sheet'}>Work Sheet</Link>
-                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/payment-history'}>Payment History</Link>
-                        </div>
+                        : currUser?.role === 'Admin' ?
+                            <div className=" flex flex-col gap-6 text-xl font-semibold">
+                                <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
+                                <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
+                                <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/all-employee-list'}>All Employee List</Link>
+
+                            </div>
+                            :
+                            <div className=" flex flex-col gap-6 text-xl font-semibold">
+                                <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
+                                <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
+                                <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/work-sheet'}>Work Sheet</Link>
+                                <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/payment-history'}>Payment History</Link>
+                            </div>
                 }
             </div>
             <button onClick={userLogout} className=" self-end pr-5 flex gap-3 items-center text-xl font-semibold">
