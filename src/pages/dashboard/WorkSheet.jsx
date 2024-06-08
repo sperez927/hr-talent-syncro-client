@@ -30,6 +30,7 @@ const WorkSheet = () => {
     const onSubmit = async (data) => {
         const newWorkEntry = {
             userId: user?.uid,
+            name: user?.displayName,
             email: user?.email,
             task: data?.task,
             hourWorked: data?.hours,
