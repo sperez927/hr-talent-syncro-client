@@ -25,7 +25,7 @@ const EmployeeList = () => {
     const fetchData = async () => {
         try {
             const response = await axiosPrivate.get('/user');
-            setEmployees(response.data);
+            setEmployees(response.data.filter(i => i.role === 'Employee'));
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -115,7 +115,7 @@ const EmployeeList = () => {
 
     return (
         <div className="p-10 pb-0">
-            <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Work Sheet</h1>
+            <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Employee List</h1>
             <div className=' mt-10'>
                 <DataTable value={employees} paginator rows={10} rowsPerPageOptions={[10, 20, 50]}>
                     <Column field="name" header="Name" />
