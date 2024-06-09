@@ -17,7 +17,7 @@ const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 
 const Register = () => {
     const axiosPublic = useAxiosPublic();
-    const { userRegistration, updateUserProfile } = useContext(AuthContext);
+    const { userRegistration, updateUserProfile, bannedUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [showPass, setShowPass] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -26,70 +26,80 @@ const Register = () => {
 
 
     const onSubmit = async (data) => {
-        const { name, email, password, photo, salary } = data;
-
-        console.log("Salary Input:", salary);
-
-        if (password.length < 6) {
-            setErrorMessage("Password must be at least 6 characters long");
-        } else if (!password.match(/[a-z]/)) {
-            setErrorMessage("Password must contain at least one lowercase letter");
-        } else if (!password.match(/[A-Z]/)) {
-            setErrorMessage("Password must contain at least one uppercase letter");
-        } else if (!password.match(/[!@#$%^&*(),.?":{}|<>]/)) {
-            setErrorMessage("Password must contain at least one special character");
-        } else {
-            try {
-                const formData = new FormData();
-                formData.append('image', photo[0]);
-
-                const imgbbResponse = await axiosPublic.post(`https://api.imgbb.com/1/upload?key=${image_hosting_key}`, formData);
-                const photoUrl = imgbbResponse.data.data.url;
-
-                const result = await userRegistration(email, password);
-                console.log(result);
-                await updateUserProfile(name, photoUrl);
-
-                const newUser = {
-                    name,
-                    email,
-                    password,
-                    photoUrl,
-                    role: data.role,
-                    bank_account_no: data.bank_account_no,
-                    salary: parseFloat(salary),
-                    designation: data.designation,
-                    isVerified: false,
-                };
-
-                console.log("New User Data:", newUser);
-
-                await axiosPublic.post('/user', newUser, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                MySwal.fire({
-                    title: <p className="text-3xl font-bold text-primary mb-4">Welcome to Talent Syncro!</p>,
-                    html: (
-                        <div className="text-lg">
-                            <p>You have successfully registered.</p>
-                            <p>Thank you for registering. You are now a part of our team now!</p>
-                        </div>
-                    ),
-                    icon: "success",
-                    confirmButtonColor: 'green',
-                    confirmButtonText: "Let's get started!"
-                }).then(() => {
-                    navigate(location?.state ? location.state : "/");
-                });
-            } catch (error) {
-                console.log(error);
-                toast.error("Registration failed. Please try again.");
-            }
+        if (bannedUser?.find(bannedUser => bannedUser.email === data.email)) {
+            MySwal.fire({
+                title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
+                icon: "error",
+                confirmButtonColor: 'green',
+                confirmButtonText: "Okay"
+            })
         }
-        console.log(data);
+        else {
+            const { name, email, password, photo, salary } = data;
+
+            console.log("Salary Input:", salary);
+
+            if (password.length < 6) {
+                setErrorMessage("Password must be at least 6 characters long");
+            } else if (!password.match(/[a-z]/)) {
+                setErrorMessage("Password must contain at least one lowercase letter");
+            } else if (!password.match(/[A-Z]/)) {
+                setErrorMessage("Password must contain at least one uppercase letter");
+            } else if (!password.match(/[!@#$%^&*(),.?":{}|<>]/)) {
+                setErrorMessage("Password must contain at least one special character");
+            } else {
+                try {
+                    const formData = new FormData();
+                    formData.append('image', photo[0]);
+
+                    const imgbbResponse = await axiosPublic.post(`https://api.imgbb.com/1/upload?key=${image_hosting_key}`, formData);
+                    const photoUrl = imgbbResponse.data.data.url;
+
+                    const result = await userRegistration(email, password);
+                    console.log(result);
+                    await updateUserProfile(name, photoUrl);
+
+                    const newUser = {
+                        name,
+                        email,
+                        password,
+                        photoUrl,
+                        role: data.role,
+                        bank_account_no: data.bank_account_no,
+                        salary: parseFloat(salary),
+                        designation: data.designation,
+                        isVerified: false,
+                    };
+
+                    console.log("New User Data:", newUser);
+
+                    await axiosPublic.post('/user', newUser, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    MySwal.fire({
+                        title: <p className="text-3xl font-bold text-primary mb-4">Welcome to Talent Syncro!</p>,
+                        html: (
+                            <div className="text-lg">
+                                <p>You have successfully registered.</p>
+                                <p>Thank you for registering. You are now a part of our team now!</p>
+                            </div>
+                        ),
+                        icon: "success",
+                        confirmButtonColor: 'green',
+                        confirmButtonText: "Let's get started!"
+                    }).then(() => {
+                        navigate(location?.state ? location.state : "/");
+                    });
+                } catch (error) {
+                    console.log(error);
+                    toast.error("Registration failed. Please try again.");
+                }
+            }
+            console.log(data);
+        }
     };
 
 

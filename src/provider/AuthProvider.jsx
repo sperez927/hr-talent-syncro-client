@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const axiosPrivate = useAxiosPrivate();
     const [currUser, setCurrUser] = useState(null);
+    const [bannedUser, setBannedUser] = useState(null);
 
     const googleSignIn = () => {
         return signInWithPopup(auth, googleProvider);
@@ -81,9 +82,25 @@ const AuthProvider = ({ children }) => {
         }
     }, [user, axiosPrivate]);
 
+    useEffect(() => {
+        const fetchBannedEmployees = async () => {
+            try {
+                const response = await axiosPrivate.get('/banned-user');
+                setBannedUser(response.data);
+            } catch (error) {
+                console.error('Failed to get banned users', error);
+            }
+        };
+
+        fetchBannedEmployees();
+    }, [axiosPrivate]);
+
+    
+
     const authInfo = {
         user,
         currUser,
+        bannedUser,
         loading,
         updateUserProfile,
         setLoading,
