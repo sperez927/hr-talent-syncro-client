@@ -4,6 +4,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 const PaymentDialog = ({ selectedEmployee, paymentDate, setPaymentDate, clientSecret, setShowPayModal, error, setError }) => {
     const stripe = useStripe();
@@ -25,17 +29,21 @@ const PaymentDialog = ({ selectedEmployee, paymentDate, setPaymentDate, clientSe
             return;
         }
 
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
+        const { error } = await stripe.createPaymentMethod({
             type: 'card',
             card,
         });
 
         if (error) {
-            console.log(error);
-            setError(error.message)
+            setError(error.message);
+            MySwal.fire({
+                icon: 'error',
+                title: 'Payment Error',
+                text: error.message,
+            });
+            return;
         } else {
-            console.log('payment method', paymentMethod);
-            setError('')
+            setError('');
         }
 
         const { paymentIntent, error: cardConfirmError } = await stripe.confirmCardPayment(clientSecret, {
@@ -49,15 +57,18 @@ const PaymentDialog = ({ selectedEmployee, paymentDate, setPaymentDate, clientSe
         });
 
         if (cardConfirmError) {
-            console.log(cardConfirmError);
+            MySwal.fire({
+                icon: 'error',
+                title: 'Payment Error',
+                text: cardConfirmError.message,
+            });
+            setShowPayModal(false);
+            return;
         } else {
-            console.log('Payment intent', paymentIntent);
             if (paymentIntent.status === 'succeeded' && selectedEmployee.isVerified && paymentDate) {
-                console.log('Transaction id', paymentIntent.id);
                 try {
                     const month = paymentDate.getMonth() + 1;
                     const year = paymentDate.getFullYear();
-                    console.log(`Paying ${selectedEmployee.name} for ${month}/${year}`);
 
                     const paymentInfo = {
                         employeeId: selectedEmployee._id,
@@ -66,14 +77,24 @@ const PaymentDialog = ({ selectedEmployee, paymentDate, setPaymentDate, clientSe
                         employeeSalary: selectedEmployee.salary,
                         date: paymentDate,
                         transactionId: paymentIntent.id,
-                    }
-                    console.log(paymentInfo);
+                    };
 
                     await axiosPrivate.post('/payment', paymentInfo);
 
+                    MySwal.fire({
+                        icon: 'success',
+                        title: 'Payment Successful',
+                        text: `Successfully paid ${selectedEmployee.name} for ${month}/${year}`,
+                    });
+
                     setShowPayModal(false);
                 } catch (error) {
-                    console.error('Error paying employee:', error);
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Payment Error',
+                        text: 'An error occurred while processing the payment.',
+                    })
+                    setShowPayModal(false);
                 }
             }
         }
@@ -117,9 +138,7 @@ const PaymentDialog = ({ selectedEmployee, paymentDate, setPaymentDate, clientSe
                                     },
                                 },
                             }}
-                            onReady={() => {
-                                console.log('CardElement [ready]');
-                            }} />
+                        />
                     </div>
                     <p className='text-red-500'>{error}</p>
                     <Button disabled={!stripe || !clientSecret} label="Pay" onClick={handleSubmit} className="bg-primary w-full py-2 rounded" />
