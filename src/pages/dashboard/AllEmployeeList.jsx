@@ -32,7 +32,7 @@ const AllEmployeeList = () => {
         }
     };
 
-    const handleFire = async (id) => {
+    const handleFire = async (currUser) => {
         const result = await MySwal.fire({
             title: <p className="text-3xl font-bold text-primary mb-4">Are you sure?</p>,
             icon: "question",
@@ -45,8 +45,12 @@ const AllEmployeeList = () => {
 
         if (result.isConfirmed) {
             try {
-                await axiosPrivate.delete(`/user/${id}`);
-                setAllEmployee(prev => prev.filter(user => user._id !== id));
+                await axiosPrivate.post(`/banned-user/`, {
+                    name: currUser.name,
+                    email: currUser.email,
+                })
+                await axiosPrivate.delete(`/user/${currUser._id}`);
+                setAllEmployee(prev => prev.filter(user => user._id !== currUser._id));
             } catch (error) {
                 console.error('Failed to delete user', error);
             }
@@ -54,35 +58,32 @@ const AllEmployeeList = () => {
     };
 
     return (
-        <div>
-            <div className="grid grid-cols-4 font-bold bg-primary text-center text-white">
-                <div className="py-2 border">Name</div>
-                <div className="py-2 border">Designation</div>
-                <div className="py-2 border"></div>
-                <div className="py-2 border"></div>
-            </div>
-            {
-                allEmployee?.map((user, idx) => (
-                    <div key={idx} className="grid grid-cols-4 text-center">
-                        <div className="py-2 border border-gray-400 border-t-0">{user.name}</div>
-                        <div className="py-2 border border-gray-400 border-t-0">{user.designation}</div>
-                        <button
-                            className="py-2 border border-gray-400 border-t-0"
-                            onClick={() => handleFire(user._id)}
-                        >
-                            Fire
-                        </button>
-                        {user.role === 'Employee' && (
-                            <button
-                                className="py-2 border border-gray-400 border-t-0"
-                                onClick={() => handleMakeHR(user._id)}
-                            >
-                                Make HR
+        <div className="p-10 pb-0">
+            <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">All Employee List</h1>
+            <div className=' mt-10'>
+                <div className="grid grid-cols-4 font-bold bg-primary text-center text-white">
+                    <div className="py-2 ">Name</div>
+                    <div className="py-2 ">Designation</div>
+                    <div className="py-2 "></div>
+                    <div className="py-2 "></div>
+                </div>
+                {
+                    allEmployee?.map((user, idx) => (
+                        <div key={idx} className="grid grid-cols-4 text-center">
+                            <div className="py-2 ">{user.name}</div>
+                            <div className="py-2 ">{user.designation}</div>
+                            <button className="py-2 " onClick={() => handleFire(user)}>
+                                Fire
                             </button>
-                        )}
-                    </div>
-                ))
-            }
+                            {user.role === 'Employee' && (
+                                <button className="py-2 " onClick={() => handleMakeHR(user._id)} >
+                                    Make HR
+                                </button>
+                            )}
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     );
 };
