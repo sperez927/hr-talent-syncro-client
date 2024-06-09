@@ -27,15 +27,18 @@ const EmployeeList = () => {
 
     useEffect(() => {
         if (selectedEmployee) {
-            axiosPrivate.post('/create-payment-intent', { salary: selectedEmployee.salary })
-                .then(res => {
+            (async () => {
+                try {
+                    const res = await axiosPrivate.post('/create-payment-intent', { salary: selectedEmployee.salary });
                     setClientSecret(res.data.clientSecret);
-                })
-                .catch(error => {
-                    setError('Failed to create payment intent', error);
-                });
+                } catch (error) {
+                    setError('Failed to create payment intent');
+                    console.error('Failed to create payment intent:', error);
+                }
+            })();
         }
-    }, [axiosPrivate, selectedEmployee]);
+    }, [selectedEmployee, axiosPrivate]);
+
 
     const fetchData = async () => {
         try {
@@ -65,13 +68,21 @@ const EmployeeList = () => {
     };
 
 
-    const openPayModal = (employee) => {
+    const openPayModal = async (employee) => {
         if (employee.isVerified) {
             setSelectedEmployee(employee);
             setPaymentDate(null);
-            setShowPayModal(true);
+            try {
+                const res = await axiosPrivate.post('/create-payment-intent', { salary: employee.salary });
+                setClientSecret(res.data.clientSecret);
+                setShowPayModal(true);
+            } catch (error) {
+                setError('Failed to create payment intent');
+                console.error('Failed to create payment intent:', error);
+            }
         }
     };
+
 
     const payButtonTemplate = (rowData) => {
         return (

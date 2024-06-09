@@ -29,17 +29,17 @@ const PaymentDialog = ({ selectedEmployee, paymentDate, setPaymentDate, clientSe
             return;
         }
 
-        const { error } = await stripe.createPaymentMethod({
+        const { error: paymentMethodError } = await stripe.createPaymentMethod({
             type: 'card',
             card,
         });
 
-        if (error) {
-            setError(error.message);
+        if (paymentMethodError) {
+            setError(paymentMethodError.message);
             MySwal.fire({
                 icon: 'error',
                 title: 'Payment Error',
-                text: error.message,
+                text: paymentMethodError.message,
             });
             return;
         } else {
@@ -93,7 +93,7 @@ const PaymentDialog = ({ selectedEmployee, paymentDate, setPaymentDate, clientSe
                         icon: 'error',
                         title: 'Payment Error',
                         text: 'An error occurred while processing the payment.',
-                    })
+                    });
                     setShowPayModal(false);
                 }
             }
@@ -149,3 +149,4 @@ const PaymentDialog = ({ selectedEmployee, paymentDate, setPaymentDate, clientSe
 };
 
 export default PaymentDialog;
+
