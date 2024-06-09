@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
+import { AuthContext } from "../../provider/AuthProvider";
 
 const MySwal = withReactContent(Swal);
 
 const AllEmployeeList = () => {
+    const { bannedUser, setBannedUser } = useContext(AuthContext);
     const axiosPrivate = useAxiosPrivate();
     const [allEmployee, setAllEmployee] = useState(null);
 
@@ -48,11 +49,13 @@ const AllEmployeeList = () => {
                 await axiosPrivate.post(`/banned-user/`, {
                     name: currUser.name,
                     email: currUser.email,
-                })
-                await axiosPrivate.delete(`/user/${currUser._id}`);
-                setAllEmployee(prev => prev.filter(user => user._id !== currUser._id));
+                });
+                setBannedUser([...bannedUser, currUser.email]);
+
+                await axiosPrivate.put(`/user/${currUser._id}`, { status: 'ban' });
+                setAllEmployee(prev => prev.map(user => user._id === currUser._id ? { ...user, status: 'ban' } : user));
             } catch (error) {
-                console.error('Failed to delete user', error);
+                console.error('Failed to ban user', error);
             }
         }
     };
@@ -60,25 +63,31 @@ const AllEmployeeList = () => {
     return (
         <div className="p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">All Employee List</h1>
-            <div className=' mt-10'>
+            <div className='mt-10'>
                 <div className="grid grid-cols-4 font-bold bg-primary text-center text-white">
-                    <div className="py-2 ">Name</div>
-                    <div className="py-2 ">Designation</div>
-                    <div className="py-2 "></div>
-                    <div className="py-2 "></div>
+                    <div className="py-2">Name</div>
+                    <div className="py-2">Designation</div>
+                    <div className="py-2"></div>
+                    <div className="py-2"></div>
                 </div>
                 {
                     allEmployee?.map((user, idx) => (
                         <div key={idx} className="grid grid-cols-4 text-center">
-                            <div className="py-2 ">{user.name}</div>
-                            <div className="py-2 ">{user.designation}</div>
-                            <button className="py-2 " onClick={() => handleFire(user)}>
-                                Fire
-                            </button>
-                            {user.role === 'Employee' && (
-                                <button className="py-2 " onClick={() => handleMakeHR(user._id)} >
-                                    Make HR
-                                </button>
+                            <div className="py-2">{user.name}</div>
+                            <div className="py-2">{user.designation}</div>
+                            {user.status === 'ban' ? (
+                                <div className="py-2">Fired</div>
+                            ) : (
+                                <>
+                                    <button className="py-2" onClick={() => handleFire(user)}>
+                                        Fire
+                                    </button>
+                                    {user.role === 'Employee' && (
+                                        <button className="py-2" onClick={() => handleMakeHR(user._id)}>
+                                            Make HR
+                                        </button>
+                                    )}
+                                </>
                             )}
                         </div>
                     ))

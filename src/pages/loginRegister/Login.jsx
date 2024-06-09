@@ -8,27 +8,42 @@ import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../../provider/AuthProvider";
 import loginReg from "../../assets/loginReg.jpg"
 import SocialLogin from "./SocialLogin";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
+
+const MySwal = withReactContent(Swal);
 const Login = () => {
-    const { userLogin } = useContext(AuthContext);
+    const { userLogin, bannedUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        const { email, password } = data;
+        if (bannedUser?.find(bannedUser => bannedUser === data.email)) {
+            MySwal.fire({
+                title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
+                icon: "error",
+                confirmButtonColor: 'green',
+                confirmButtonText: "Okay"
+            })
+        }
 
-        userLogin(email, password)
-            .then(result => {
-                console.log(result);
-                toast.success('Successfully Logged In');
-                navigate(location?.state ? location.state : "/");
-            })
-            .catch(error => {
-                console.log(error);
-                toast.error('Incorrect User Input');
-            })
+        else {
+            const { email, password } = data;
+
+            userLogin(email, password)
+                .then(result => {
+                    console.log(result);
+                    toast.success('Successfully Logged In');
+                    navigate(location?.state ? location.state : "/");
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error('Incorrect User Input');
+                })
+        }
     }
 
 
@@ -68,7 +83,7 @@ const Login = () => {
                             <button className="btn text-white bg-primary hover:bg-transparent hover:border hover:border-primary hover:text-primary transition duration-300 ease-in-out">Login</button>
                         </div>
                     </form>
-                        <SocialLogin></SocialLogin>
+                    <SocialLogin></SocialLogin>
                     <p className=" mt-3 text-center">Do Not Have An Account ? <Link className=" text-red-500" to={'/register'}>Register</Link></p>
 
                 </div>

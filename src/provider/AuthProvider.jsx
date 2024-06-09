@@ -86,7 +86,7 @@ const AuthProvider = ({ children }) => {
         const fetchBannedEmployees = async () => {
             try {
                 const response = await axiosPrivate.get('/banned-user');
-                setBannedUser(response.data);
+                setBannedUser(response.data?.map(user => user.email));
             } catch (error) {
                 console.error('Failed to get banned users', error);
             }
@@ -94,13 +94,13 @@ const AuthProvider = ({ children }) => {
 
         fetchBannedEmployees();
     }, [axiosPrivate]);
-
     
 
     const authInfo = {
         user,
         currUser,
         bannedUser,
+        setBannedUser,
         loading,
         updateUserProfile,
         setLoading,

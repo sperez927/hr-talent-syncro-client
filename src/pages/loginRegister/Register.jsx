@@ -26,7 +26,7 @@ const Register = () => {
 
 
     const onSubmit = async (data) => {
-        if (bannedUser?.find(bannedUser => bannedUser.email === data.email)) {
+        if (bannedUser?.find(bannedUser => bannedUser === data.email)) {
             MySwal.fire({
                 title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
                 icon: "error",
@@ -69,6 +69,7 @@ const Register = () => {
                         salary: parseFloat(salary),
                         designation: data.designation,
                         isVerified: false,
+                        status: 'active',
                     };
 
                     console.log("New User Data:", newUser);

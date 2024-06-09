@@ -22,7 +22,7 @@ const SocialLogin = () => {
             .then(result => {
                 console.log(result.user.email);
 
-                if (bannedUser?.find(bannedUser => bannedUser.email === result.user.email)) {
+                if (bannedUser?.find(bannedUser => bannedUser === result.user.email)) {
                     userLogout();
                     MySwal.fire({
                         title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
@@ -41,6 +41,7 @@ const SocialLogin = () => {
                         salary: null,
                         designation: null,
                         isVerified: false,
+                        status: 'active',
                     };
 
                     console.log("New User Data:", newUser);
@@ -66,7 +67,7 @@ const SocialLogin = () => {
             .then(result => {
                 console.log(result.user.email);
 
-                if (bannedUser?.find(bannedUser => bannedUser.email === result.user.email)) {
+                if (bannedUser?.find(bannedUser => bannedUser === result.user.email)) {
                     userLogout();
                     MySwal.fire({
                         title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
@@ -86,6 +87,7 @@ const SocialLogin = () => {
                         salary: null,
                         designation: null,
                         isVerified: false,
+                        status: 'active',
                     };
 
                     console.log("New User Data:", newUser);
