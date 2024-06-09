@@ -1,15 +1,16 @@
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
 import { useState, useEffect } from 'react';
 import { FaCheck } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Link } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import PaymentDialog from './PaymentDialog';
 
+const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_KEY);
 
 const EmployeeList = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -17,10 +18,24 @@ const EmployeeList = () => {
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [showPayModal, setShowPayModal] = useState(false);
     const [paymentDate, setPaymentDate] = useState(null);
+    const [error, setError] = useState('');
+    const [clientSecret, setClientSecret] = useState('');
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (selectedEmployee) {
+            axiosPrivate.post('/create-payment-intent', { salary: selectedEmployee.salary })
+                .then(res => {
+                    setClientSecret(res.data.clientSecret);
+                })
+                .catch(error => {
+                    setError('Failed to create payment intent', error);
+                });
+        }
+    }, [axiosPrivate, selectedEmployee]);
 
     const fetchData = async () => {
         try {
@@ -34,9 +49,7 @@ const EmployeeList = () => {
     const toggleVerification = async (employee) => {
         try {
             const updatedEmployee = { ...employee, isVerified: !employee.isVerified };
-
             await axiosPrivate.put('/user/' + employee._id, updatedEmployee);
-
             setEmployees(employees.map(emp => emp._id === employee._id ? updatedEmployee : emp));
         } catch (error) {
             console.error('Error toggling verification:', error);
@@ -51,36 +64,6 @@ const EmployeeList = () => {
         );
     };
 
-    const handlePay = async () => {
-        if (selectedEmployee.isVerified && paymentDate) {
-            try {
-                const month = paymentDate.getMonth() + 1;
-                const year = paymentDate.getFullYear();
-                console.log(`Paying ${selectedEmployee.name} for ${month}/${year}`);
-
-                const paymentInfo = {
-                    employeeId: selectedEmployee._id,
-                    employeeName: selectedEmployee.name,
-                    employeeEmail: selectedEmployee.email,
-                    employeeSalary: selectedEmployee.salary,
-                    date: paymentDate,
-                }
-                console.log(paymentInfo);
-
-                axiosPrivate.post('/payment', paymentInfo);
-
-                setShowPayModal(false);
-            } catch (error) {
-                console.error('Error paying employee:', error);
-            }
-        } else {
-            console.error('Cannot pay an unverified employee or without selecting a date.');
-        }
-    };
-
-    const handleDetails = (employee) => {
-        console.log(`Viewing details for ${employee.name}`);
-    };
 
     const openPayModal = (employee) => {
         if (employee.isVerified) {
@@ -88,10 +71,6 @@ const EmployeeList = () => {
             setPaymentDate(null);
             setShowPayModal(true);
         }
-    };
-
-    const closePayModal = () => {
-        setShowPayModal(false);
     };
 
     const payButtonTemplate = (rowData) => {
@@ -108,15 +87,15 @@ const EmployeeList = () => {
     const detailsButtonTemplate = (rowData) => {
         return (
             <Link to={`/dashboard/employee-details/${rowData?.email}`}>
-                <Button label="Details" onClick={() => handleDetails(rowData)} />
+                <Button label="Details" />
             </Link>
-        )
+        );
     };
 
     return (
         <div className="p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Employee List</h1>
-            <div className=' mt-10'>
+            <div className='mt-10'>
                 <DataTable value={employees} paginator rows={10} rowsPerPageOptions={[10, 20, 50]}>
                     <Column field="name" header="Name" />
                     <Column field="email" header="Email" />
@@ -127,29 +106,19 @@ const EmployeeList = () => {
                     <Column body={detailsButtonTemplate} header="Details" />
                 </DataTable>
 
-                {/* Pay Modal */}
-                <Dialog
-                    visible={showPayModal}
-                    onHide={closePayModal}
-                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', width: '70%', height: '50%' }}
-                >
-                    <div className=' w-full h-full flex justify-center items-center'>
-                        <div className="p-10 text-center text-xl">
-                            <h4 className="text-white text-3xl font-bold mb-4">Pay Employee</h4>
-                            <p className="text-white mb-2">Employee: {selectedEmployee && selectedEmployee.name}</p>
-                            <p className="text-white mb-4">Salary: {selectedEmployee && selectedEmployee.salary}</p>
-                            <DatePicker
-                                selected={paymentDate}
-                                onChange={(date) => setPaymentDate(date)}
-                                showMonthYearPicker
-                                dateFormat="MM/yyyy"
-                                className="mb-4 py-2 px-10 text-center rounded w-full"
-                                placeholderText="Select Month and Year"
-                            />
-                            <Button label="Pay" onClick={handlePay} className="bg-primary text-white w-full py-2 rounded" />
-                        </div>
-                    </div>
-                </Dialog>
+                {showPayModal && (
+                    <Elements stripe={stripePromise}>
+                        <PaymentDialog
+                            selectedEmployee={selectedEmployee}
+                            paymentDate={paymentDate}
+                            setPaymentDate={setPaymentDate}
+                            clientSecret={clientSecret}
+                            setShowPayModal={setShowPayModal}
+                            error={error}
+                            setError={setError}
+                        />
+                    </Elements>
+                )}
             </div>
         </div>
     );
