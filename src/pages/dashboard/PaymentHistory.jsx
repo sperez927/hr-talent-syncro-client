@@ -49,7 +49,7 @@ const PaymentHistory = () => {
                                     <div key={index} className="grid grid-cols-3 text-center">
                                         <div className=" py-2 border border-t-0 border-gray-400">{new Date(payment.date).toLocaleString('default', { month: 'long', year: 'numeric' })}</div>
                                         <div className=" py-2 border border-t-0 border-gray-400">{payment.employeeSalary}</div>
-                                        <div className=" py-2 border border-t-0 border-gray-400">{payment.transactionId}</div>
+                                        <div className=" py-2 border border-t-0 border-gray-400 overflow-hidden px-1">{payment.transactionId}</div>
                                     </div>
                                 ))
                             ) : (
