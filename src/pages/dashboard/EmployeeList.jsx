@@ -111,8 +111,8 @@ const EmployeeList = () => {
                         <Column field="bank_account_no" header="Account" className="px-2" />
                         <Column field="salary" header="Salary" className="px-2" />
                         <Column field="isVerified" header="Verified" body={verifyButtonTemplate} className="px-2" />
-                        <Column body={payButtonTemplate} header="Pay" className="px-2" />
-                        <Column body={detailsButtonTemplate} header="Details" className="px-2" />
+                        <Column body={payButtonTemplate} header="" className="px-2" />
+                        <Column body={detailsButtonTemplate} header="" className="px-2" />
                     </DataTable>
                 </div>
 
