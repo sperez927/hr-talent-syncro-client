@@ -11,7 +11,7 @@ const SideBar = () => {
 
     return (
         <>
-            <div className="drawer">
+            <div className="drawer z-50">
                 <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content flex flex-col">
                     <div className="flex-none lg:hidden ">
