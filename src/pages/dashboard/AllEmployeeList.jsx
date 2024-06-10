@@ -10,6 +10,13 @@ const AllEmployeeList = () => {
     const { bannedUser, setBannedUser } = useContext(AuthContext);
     const axiosPrivate = useAxiosPrivate();
     const [allEmployee, setAllEmployee] = useState(null);
+    const [cardView, setCardView] = useState(false);
+
+
+    const handleView = () => {
+        const newData = cardView === true ? false : true;
+        setCardView(newData);
+    }
 
     const handleMakeHR = async (id) => {
         try {
@@ -91,47 +98,87 @@ const AllEmployeeList = () => {
     return (
         <div className="p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">All Employee List</h1>
-            <div className='mt-10'>
-                <div className="grid grid-cols-5 font-bold px-3 bg-primary text-white">
-                    <div className="py-2">Name</div>
-                    <div className="py-2">Designation</div>
-                    <div className="py-2">Salary</div>
-                    <div></div>
-                    <div></div>
-                </div>
-                {
-                    allEmployee?.map((user, idx) => (
-                        <div key={idx} className="grid grid-cols-5 px-3">
-                            <div className="py-2">{user.name}</div>
-                            <div className="py-2">{user.designation}</div>
-                            <div className="py-2 flex justify-between items-center">
-                                <p>{user.salary}</p>
-                                {
-                                    user.status !== 'ban' &&
-                                    <button onClick={() => handleSalary(user)} className="text-xs text-cyan-500 font-bold">Adjust</button>
-                                }
-                            </div>
-                            {
-                                user.status === 'ban' ?
-                                    <div className="py-2 text-red-500 font-bold text-center">Fired</div>
-                                    :
-                                    <>
-                                        <button className="py-2 text-primary font-bold" onClick={() => handleFire(user)}>
-                                            Fire
-                                        </button>
-                                        {
-                                            user.role === 'Employee' &&
-                                            <button className="py-2 text-green-500 font-bold" onClick={() => handleMakeHR(user._id)}>
-                                                Make HR
-                                            </button>
-                                        }
-                                    </>
-                            }
-                        </div>
-                    ))
-                }
+            <button onClick={handleView} className=" bg-primary p-2 text-white font-bold rounded mt-10">{cardView ? 'Grid View' : 'Card View'}</button>
 
-            </div>
+            {
+                cardView ?
+                    <div className=" mt-10 grid grid-cols-3 gap-4">
+                        {
+                            allEmployee?.map((user, idx) => (
+                                <div key={idx} className=" space-y-2 border shadow-lg py-2 flex flex-col justify-center items-center">
+                                    <img className=" w-40 h-40 object-cover object-top rounded-full" src={user.photoUrl} alt="" />
+                                    <h1 className=" font-bold text-xl">{user.name}</h1>
+                                    <p>{user.designation}</p>
+                                    <div className="flex gap-6">
+                                        <p>{user.salary}</p>
+                                        {
+                                            user.status !== 'ban' &&
+                                            <button onClick={() => handleSalary(user)} className="text-xs text-cyan-500 font-bold">Adjust</button>
+                                        }
+                                    </div>
+                                    {
+                                        user.status === 'ban' ?
+                                            <div className="text-red-500 font-bold text-center">Fired</div>
+                                            :
+                                            <div className=" flex gap-6">
+                                                <button className="text-primary font-bold" onClick={() => handleFire(user)}>
+                                                    Fire
+                                                </button>
+                                                {
+                                                    user.role === 'Employee' &&
+                                                    <button className="text-green-500 font-bold" onClick={() => handleMakeHR(user._id)}>
+                                                        Make HR
+                                                    </button>
+                                                }
+                                            </div>
+                                    }
+                                </div>
+                            ))
+                        }
+                    </div>
+                    :
+                    <div className='mt-10'>
+                        <div className="grid grid-cols-5 font-bold px-3 bg-primary text-white">
+                            <div className="py-2">Name</div>
+                            <div className="py-2">Designation</div>
+                            <div className="py-2">Salary</div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        {
+                            allEmployee?.map((user, idx) => (
+                                <div key={idx} className="grid grid-cols-5 px-3">
+                                    <div className="py-2">{user.name}</div>
+                                    <div className="py-2">{user.designation}</div>
+                                    <div className="py-2 flex justify-between items-center">
+                                        <p>{user.salary}</p>
+                                        {
+                                            user.status !== 'ban' &&
+                                            <button onClick={() => handleSalary(user)} className="text-xs text-cyan-500 font-bold">Adjust</button>
+                                        }
+                                    </div>
+                                    {
+                                        user.status === 'ban' ?
+                                            <div className="py-2 text-red-500 font-bold text-center">Fired</div>
+                                            :
+                                            <>
+                                                <button className="py-2 text-primary font-bold" onClick={() => handleFire(user)}>
+                                                    Fire
+                                                </button>
+                                                {
+                                                    user.role === 'Employee' &&
+                                                    <button className="py-2 text-green-500 font-bold" onClick={() => handleMakeHR(user._id)}>
+                                                        Make HR
+                                                    </button>
+                                                }
+                                            </>
+                                    }
+                                </div>
+                            ))
+                        }
+
+                    </div>
+            }
         </div>
     );
 };
