@@ -75,7 +75,7 @@ const AuthProvider = ({ children }) => {
                 };
                 console.log("Sending user info to /jwt:", userInfo);
                 try {
-                    const res = await axiosPrivate.post('/jwt', userInfo);
+                    const res = await axiosPublic.post('/jwt', userInfo);
                     if (res.data.token) {
                         localStorage.setItem('token', res.data.token);
                     } else {
