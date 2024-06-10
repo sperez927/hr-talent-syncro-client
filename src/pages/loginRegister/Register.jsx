@@ -110,7 +110,7 @@ const Register = () => {
                 <title>Talent Syncro | Register</title>
             </Helmet>
             <div style={{ backgroundImage: `url(${loginReg})` }} className="mx-auto w-full flex justify-center lg:mt-10  md:py-10 bg-cover bg-top">
-                <div className="bg-white bg-opacity-85 p-10">
+                <div className="bg-white bg-opacity-85 p-10 md:w-1/2">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         <div className="form-control">
                             <label className="label">
