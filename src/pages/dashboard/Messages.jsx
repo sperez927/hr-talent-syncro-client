@@ -18,7 +18,7 @@ const Messages = () => {
     }, [axiosPrivate]);
 
     return (
-        <div className="p-2 md:p-10 pb-0">
+        <div className="p-2 pt-10 md:p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Messages</h1>
             <div className="mt-10">
                 {allMessages.length === 0 ? (

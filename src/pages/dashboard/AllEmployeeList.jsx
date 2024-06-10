@@ -96,7 +96,7 @@ const AllEmployeeList = () => {
     }, [axiosPrivate]);
 
     return (
-        <div className="p-2 md:p-10 pb-0">
+        <div className="p-2 pt-10 md:p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">All Employee List</h1>
             <button onClick={handleView} className=" bg-primary p-2 text-white font-bold rounded mt-10">{cardView ? 'Table View' : 'Card View'}</button>
 

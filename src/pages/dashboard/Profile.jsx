@@ -6,7 +6,7 @@ const Profile = () => {
     const { currUser } = useContext(AuthContext);
 
     return (
-        <div className="p-2 md:p-10 pb-0">
+        <div className="p-2 pt-10 md:p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Profile</h1>
             <div className=" mt-10 md:text-lg font-semibold flex flex-col gap-2 items-center border shadow-lg p-4">
                 <img className=" w-52 h-52 object-cover object-top rounded-full" src={currUser?.photoUrl} alt="" />
