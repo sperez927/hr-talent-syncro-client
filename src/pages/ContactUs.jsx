@@ -2,17 +2,21 @@ import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import axios from 'axios';
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const MySwal = withReactContent(Swal);
 
 const ContactUs = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const axiosPublic = useAxiosPublic();
 
     const onSubmit = async (data) => {
         try {
-            // TODO
-            await axios.post('/', data);
+            await axiosPublic.post('/contact-us', data, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
             MySwal.fire({
                 title: 'Message Sent!',
@@ -24,7 +28,6 @@ const ContactUs = () => {
             reset();
         } catch (error) {
             console.error(error);
-
             MySwal.fire({
                 title: 'Error!',
                 text: 'There was an error sending your message. Please try again later.',

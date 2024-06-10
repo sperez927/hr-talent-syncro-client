@@ -17,6 +17,7 @@ import Progress from "../pages/dashboard/Progress";
 import EmployeeRouter from "./EmployeeRouter";
 import AdminRouter from "./AdminRouter";
 import AllEmployeeList from "../pages/dashboard/AllEmployeeList";
+import Messages from "../pages/dashboard/Messages";
 
 const Router = createBrowserRouter([
     {
@@ -74,6 +75,10 @@ const Router = createBrowserRouter([
             {
                 path: '/dashboard/all-employee-list',
                 element: <AdminRouter><AllEmployeeList></AllEmployeeList></AdminRouter>,
+            },
+            {
+                path: '/dashboard/messages',
+                element: <AdminRouter><Messages></Messages></AdminRouter>,
             },
 
         ]

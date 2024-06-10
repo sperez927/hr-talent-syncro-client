@@ -77,6 +77,7 @@ const SideBar = () => {
                                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/'}>Home</Link>
                                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard'}>Profile</Link>
                                             <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/all-employee-list'}>All Employee List</Link>
+                                            <Link className=" pl-5 border-2 border-r-0 py-2 " to={'/dashboard/messages'}>Messages</Link>
 
                                         </div>
                                         :
