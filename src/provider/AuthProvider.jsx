@@ -69,7 +69,7 @@ const AuthProvider = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
 
-            if (currentUser) {
+            if (currentUser?.email) {
                 const userInfo = {
                     email: currentUser?.email
                 };
@@ -85,7 +85,7 @@ const AuthProvider = ({ children }) => {
                     console.error("Error getting token:", error);
                 }
 
-                fetchUser(currentUser.email);
+                fetchUser(currentUser?.email);
             } else {
                 setLoading(false);
             }
