@@ -32,7 +32,7 @@ const Progress = () => {
         <div className="p-2 md:p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Progress</h1>
             <div className="mt-10">
-                <div className="mb-5">
+                <div className="mb-5 flex flex-col md:flex-row gap-4">
                     <label>
                         Employee Name:
                         <select value={name} onChange={handleNameChange}>
@@ -42,7 +42,7 @@ const Progress = () => {
                             ))}
                         </select>
                     </label>
-                    <label className="ml-5">
+                    <label>
                         Month:
                         <input type="month" value={month} onChange={handleMonthChange} />
                     </label>
