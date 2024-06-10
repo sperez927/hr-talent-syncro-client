@@ -9,6 +9,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import PaymentDialog from './PaymentDialog';
+import { Helmet } from "react-helmet-async";
 
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_KEY);
 
@@ -102,6 +103,9 @@ const EmployeeList = () => {
 
     return (
         <div className="p-4 pt-10 md:p-10 pb-0">
+            <Helmet>
+                <title>Employee List | Talent Syncro</title>
+            </Helmet>
             <h1 className="border shadow-lg w-full p-4 md:p-10 text-xl md:text-4xl font-bold">Employee List</h1>
             <div className='mt-4 md:mt-10'>
                 <div className="overflow-x-auto">

@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AuthContext } from '../../provider/AuthProvider';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { Helmet } from "react-helmet-async";
 
 const WorkSheet = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -52,6 +53,9 @@ const WorkSheet = () => {
 
     return (
         <div className="p-2 pt-10 md:p-10 pb-0">
+            <Helmet>
+                <title>Work Sheet | Talent Syncro</title>
+            </Helmet>
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Work Sheet</h1>
             <div className="mt-10">
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-4 items-end gap-2">

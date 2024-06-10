@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { Helmet } from "react-helmet-async";
 
 const Progress = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -30,6 +31,9 @@ const Progress = () => {
 
     return (
         <div className="p-2 pt-10 md:p-10 pb-0">
+            <Helmet>
+                <title>Progress | Talent Syncro</title>
+            </Helmet>
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Progress</h1>
             <div className="mt-10">
                 <div className="mb-5 flex flex-col md:flex-row gap-4">

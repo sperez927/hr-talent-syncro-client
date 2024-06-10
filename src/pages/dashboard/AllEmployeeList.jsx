@@ -3,6 +3,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { AuthContext } from "../../provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const MySwal = withReactContent(Swal);
 
@@ -97,6 +98,9 @@ const AllEmployeeList = () => {
 
     return (
         <div className="p-2 pt-10 md:p-10 pb-0">
+            <Helmet>
+                <title>All Employee List | Talent Syncro</title>
+            </Helmet>
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">All Employee List</h1>
             <button onClick={handleView} className=" bg-primary p-2 text-white font-bold rounded mt-10">{cardView ? 'Table View' : 'Card View'}</button>
 

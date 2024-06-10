@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { Helmet } from "react-helmet-async";
 
 const Messages = () => {
     const [allMessages, setAllMessages] = useState([]);
@@ -19,6 +20,9 @@ const Messages = () => {
 
     return (
         <div className="p-2 pt-10 md:p-10 pb-0">
+            <Helmet>
+                <title>Messages | Talent Syncro</title>
+            </Helmet>
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Messages</h1>
             <div className="mt-10">
                 {allMessages.length === 0 ? (

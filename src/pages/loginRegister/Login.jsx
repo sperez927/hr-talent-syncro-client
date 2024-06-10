@@ -50,7 +50,7 @@ const Login = () => {
     return (
         <>
             <Helmet>
-                <title>Talent Syncro | Login</title>
+                <title>Login | Talent Syncro</title>
             </Helmet>
             <div style={{ backgroundImage: `url(${loginReg})`, }} className=" mx-auto w-full flex justify-center lg:mt-10 dark:text-white p-10 bg-cover bg-top">
                 <div className=" bg-white bg-opacity-85 p-10 md:w-1/2">
