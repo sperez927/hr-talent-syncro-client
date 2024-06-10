@@ -2,15 +2,17 @@ import { createContext, useEffect, useState } from "react";
 import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
+    const axiosPublic = useAxiosPublic();
+    const axiosPrivate = useAxiosPrivate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const axiosPrivate = useAxiosPrivate();
     const [currUser, setCurrUser] = useState(null);
     const [bannedUser, setBannedUser] = useState(null);
 
@@ -31,6 +33,7 @@ const AuthProvider = ({ children }) => {
     };
 
     const userLogout = () => {
+        localStorage.removeItem('token');
         return signOut(auth);
     };
 
@@ -63,18 +66,35 @@ const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
-            if (currentUser?.email) {
+
+            if (currentUser) {
+                const userInfo = {
+                    email: currentUser?.email
+                };
+                console.log("Sending user info to /jwt:", userInfo);
+                try {
+                    const res = await axiosPrivate.post('/jwt', userInfo);
+                    if (res.data.token) {
+                        localStorage.setItem('token', res.data.token);
+                    } else {
+                        console.error("Token not received:", res.data);
+                    }
+                } catch (error) {
+                    console.error("Error getting token:", error);
+                }
+
                 fetchUser(currentUser.email);
             } else {
                 setLoading(false);
             }
         });
+
         return () => {
             unSubscribe();
         };
-    }, [axiosPrivate]);
+    }, [axiosPublic]);
 
     useEffect(() => {
         if (user?.email) {
@@ -94,7 +114,6 @@ const AuthProvider = ({ children }) => {
 
         fetchBannedEmployees();
     }, [axiosPrivate]);
-    
 
     const authInfo = {
         user,
