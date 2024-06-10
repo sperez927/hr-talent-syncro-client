@@ -51,7 +51,7 @@ const WorkSheet = () => {
     }, [user]);
 
     return (
-        <div className="p-2 md:p-10 pb-0">
+        <div className="p-2 md:p-2 md:p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Work Sheet</h1>
             <div className="mt-10">
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-4 items-end gap-2">
