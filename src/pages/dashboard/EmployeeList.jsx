@@ -39,7 +39,6 @@ const EmployeeList = () => {
         }
     }, [selectedEmployee, axiosPrivate]);
 
-
     const fetchData = async () => {
         try {
             const response = await axiosPrivate.get('/user');
@@ -67,7 +66,6 @@ const EmployeeList = () => {
         );
     };
 
-
     const openPayModal = async (employee) => {
         if (employee.isVerified) {
             setSelectedEmployee(employee);
@@ -83,14 +81,13 @@ const EmployeeList = () => {
         }
     };
 
-
     const payButtonTemplate = (rowData) => {
         return (
             <Button
                 label="Pay"
                 onClick={() => openPayModal(rowData)}
                 disabled={!rowData.isVerified}
-                className={`${rowData.isVerified ? 'bg-primary text-white' : 'bg-gray-400 text-white'} px-2 rounded text-sm`}
+                className={`${rowData.isVerified ? 'bg-primary text-white' : 'bg-gray-400 text-white'} px-2 rounded text-xs md:text-sm`}
             />
         );
     };
@@ -98,24 +95,26 @@ const EmployeeList = () => {
     const detailsButtonTemplate = (rowData) => {
         return (
             <Link to={`/dashboard/employee-details/${rowData?.email}`}>
-                <Button label="Details" />
+                <Button label="Details" className="text-xs md:text-sm" />
             </Link>
         );
     };
 
     return (
-        <div className="p-10 pb-0">
-            <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Employee List</h1>
-            <div className='mt-10'>
-                <DataTable value={employees} paginator rows={10} rowsPerPageOptions={[10, 20, 50]}>
-                    <Column field="name" header="Name" />
-                    <Column field="email" header="Email" />
-                    <Column field="bank_account_no" header="Bank Account" />
-                    <Column field="salary" header="Salary" />
-                    <Column field="isVerified" header="Verified" body={verifyButtonTemplate} />
-                    <Column body={payButtonTemplate} header="Pay" />
-                    <Column body={detailsButtonTemplate} header="Details" />
-                </DataTable>
+        <div className="p-4 md:p-10 pb-0">
+            <h1 className="border shadow-lg w-full p-4 md:p-10 text-xl md:text-4xl font-bold">Employee List</h1>
+            <div className='mt-4 md:mt-10'>
+                <div className="overflow-x-auto">
+                    <DataTable value={employees} paginator rows={10} rowsPerPageOptions={[10, 20, 50]}>
+                        <Column field="name" header="Name" className="px-2" />
+                        <Column field="email" header="Email" className="px-2" />
+                        <Column field="bank_account_no" header="Account" className="px-2" />
+                        <Column field="salary" header="Salary" className="px-2" />
+                        <Column field="isVerified" header="Verified" body={verifyButtonTemplate} className="px-2" />
+                        <Column body={payButtonTemplate} header="Pay" className="px-2" />
+                        <Column body={detailsButtonTemplate} header="Details" className="px-2" />
+                    </DataTable>
+                </div>
 
                 {showPayModal && (
                     <Elements stripe={stripePromise}>

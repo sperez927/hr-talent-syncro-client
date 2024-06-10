@@ -31,7 +31,7 @@ const PaymentHistory = () => {
     };
 
     return (
-        <div className="p-10 pb-0">
+        <div className="p-2 md:p-10 pb-0">
             <h1 className="border shadow-lg w-full p-10 text-4xl font-bold">Payment History</h1>
             <div className="mt-10">
                 {error ? (

@@ -73,7 +73,7 @@ const ContactUs = () => {
                         {errors.message && <span className="text-red-500">{errors.message.message}</span>}
                     </div>
                     <div className="form-control mt-6">
-                        <button className="btn btn-primary text-white font-bold">Send Message</button>
+                        <button className="btn bg-primary text-white font-bold">Send Message</button>
                     </div>
                 </form>
             </div>

@@ -102,7 +102,7 @@ const AllEmployeeList = () => {
 
             {
                 cardView ?
-                    <div className=" mt-10 grid grid-cols-3 gap-4">
+                    <div className=" mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
                         {
                             allEmployee?.map((user, idx) => (
                                 <div key={idx} className=" space-y-2 border shadow-lg py-2 flex flex-col justify-center items-center">
@@ -137,47 +137,49 @@ const AllEmployeeList = () => {
                         }
                     </div>
                     :
-                    <div className='mt-10'>
-                        <div className="grid grid-cols-5 font-bold px-3 bg-primary text-white">
-                            <div className="py-2">Name</div>
-                            <div className="py-2">Designation</div>
-                            <div className="py-2">Salary</div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                        {
-                            allEmployee?.map((user, idx) => (
-                                <div key={idx} className="grid grid-cols-5 px-3">
-                                    <div className="py-2">{user.name}</div>
-                                    <div className="py-2">{user.designation}</div>
-                                    <div className="py-2 flex justify-between items-center">
-                                        <p>{user.salary}</p>
+                    <div className='mt-10 overflow-x-scroll'>
+                        <div className="min-w-[600px]">
+                            <div className="grid grid-cols-5 font-bold px-3 bg-primary text-white ">
+                                <div className="py-2">Name</div>
+                                <div className="py-2">Designation</div>
+                                <div className="py-2">Salary</div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            {
+                                allEmployee?.map((user, idx) => (
+                                    <div key={idx} className="grid grid-cols-5 px-3">
+                                        <div className="py-2">{user.name}</div>
+                                        <div className="py-2">{user.designation}</div>
+                                        <div className="py-2 flex justify-between items-center">
+                                            <p>{user.salary}</p>
+                                            {
+                                                user.status !== 'ban' &&
+                                                <button onClick={() => handleSalary(user)} className="text-xs text-cyan-500 font-bold">Adjust</button>
+                                            }
+                                        </div>
                                         {
-                                            user.status !== 'ban' &&
-                                            <button onClick={() => handleSalary(user)} className="text-xs text-cyan-500 font-bold">Adjust</button>
+                                            user.status === 'ban' ?
+                                                <div className="py-2 text-red-500 font-bold text-center">Fired</div>
+                                                :
+                                                <>
+                                                    <button className="py-2 text-primary font-bold" onClick={() => handleFire(user)}>
+                                                        Fire
+                                                    </button>
+                                                    {
+                                                        user.role === 'Employee' &&
+                                                        <button className="py-2 text-green-500 font-bold" onClick={() => handleMakeHR(user._id)}>
+                                                            Make HR
+                                                        </button>
+                                                    }
+                                                </>
                                         }
                                     </div>
-                                    {
-                                        user.status === 'ban' ?
-                                            <div className="py-2 text-red-500 font-bold text-center">Fired</div>
-                                            :
-                                            <>
-                                                <button className="py-2 text-primary font-bold" onClick={() => handleFire(user)}>
-                                                    Fire
-                                                </button>
-                                                {
-                                                    user.role === 'Employee' &&
-                                                    <button className="py-2 text-green-500 font-bold" onClick={() => handleMakeHR(user._id)}>
-                                                        Make HR
-                                                    </button>
-                                                }
-                                            </>
-                                    }
-                                </div>
-                            ))
-                        }
-
+                                ))
+                            }
+                        </div>
                     </div>
+
             }
         </div>
     );
