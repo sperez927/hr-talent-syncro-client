@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import banner from "../../assets/employee.jpg"
 import { AuthContext } from "../../provider/AuthProvider";
+import { Link } from "react-router-dom";
 
 
 const Banner = () => {
@@ -11,7 +12,7 @@ const Banner = () => {
                 <h1 className=" text-3xl font-bold">Leading the Way in Digital Talent Solutions</h1>
                 <p className=" text-lg ">Connecting Talent with Opportunities Seamlessly – Experience Excellence with Talent Syncro</p>
                 {
-                    !user && <button className=" border-2 border-primary px-2 rounded-lg">Join Us</button>
+                    !user && <Link to={'/login'}><button className=" border-2 border-primary px-2 rounded-lg">Join Us</button></Link>
                 }
             </div>
         </div>
