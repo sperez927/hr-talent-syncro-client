@@ -4,8 +4,15 @@
 - **Username:** admin@gmail.com
 - **Password:** Pa$$w0rd!
 
-## Live Site URL
-[Talent Syncro](https://talent-syncro.web.app)
+# Live Link
+  ```bash
+  https://thread-frenzy.web.app/
+  ```
+
+# Server Side Repository
+  ```bash
+  https://github.com/shRahat10/talent-syncro-server
+  ```
 
 ## Features
 1. **User Authentication:**
