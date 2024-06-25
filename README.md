@@ -2,13 +2,13 @@
 
 ## Admin Credentials
 
-- **Username:**
+### Username:
 
 ```bash
 admin@gmail.com
 ```
 
-- **Password:**
+### Password:
 
 ```bash
 Pa$$w0rd!
