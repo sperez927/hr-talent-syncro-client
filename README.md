@@ -95,3 +95,54 @@ https://github.com/shRahat10/talent-syncro-server
 - **Styling:** Tailwind CSS
 - **Payment Gateway:** Stripe
 - **Miscellaneous:** imgbb for image uploads
+
+## Running Locally
+
+To run **Thread Frenzy** locally, follow these steps:
+
+### 1. Clone the Repository
+- Open your terminal and run:
+  ```bash
+  git clone <repository-url>
+  cd thread-frenzy
+  ```
+
+### 2. Set Up the Server
+- Navigate to the server directory:
+  ```bash
+  cd server
+  ```
+- Install server dependencies:
+  ```bash
+  npm install
+  ```
+- Create a `.env` file in the server directory and add your environment variables (e.g., MongoDB URI, Stripe keys, Firebase credentials).
+- Start the server:
+  ```bash
+  npm start
+  ```
+
+### 3. Set Up the Client
+- Navigate to the client directory:
+  ```bash
+  cd ../client
+  ```
+- Install client dependencies:
+  ```bash
+  npm install
+  ```
+- Create a `.env` file in the client directory and add your environment variables (e.g., API endpoint, Firebase configuration).
+- Start the client:
+  ```bash
+  npm start
+  ```
+
+### 4. Access the Application
+- Open your browser and navigate to:
+  ```bash
+  http://localhost:3000
+  ```
+- The server should be running on:
+  ```bash
+  http://localhost:5000
+  ```
