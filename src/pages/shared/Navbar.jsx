@@ -77,13 +77,13 @@ const Navbar = () => {
             </NavLink>
             {
                 user && <NavLink to={"/dashboard"} className={({ isActive }) =>
-                isActive
-                    ? "border-b-2 border-primary font-bold text-primary"
-                    : " "
-            }
-            >
-                Dashboard
-            </NavLink>}
+                    isActive
+                        ? "border-b-2 border-primary font-bold text-primary"
+                        : " "
+                }
+                >
+                    Dashboard
+                </NavLink>}
             {
                 <NavLink to={"/contact-us"} className={({ isActive }) =>
                     isActive

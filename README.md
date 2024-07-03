@@ -23,7 +23,7 @@ https://talent-syncro.web.app
 # Server Side Repository
 
 ```bash
-https://github.com/shRahat10/talent-syncro-server
+https://github.com/sperez927/hr-talent-syncro-server 
 ```
 
 ## Features

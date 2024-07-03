@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 
 const Banner = () => {
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     return (
         <div className=" text-white py-32 bg-cover bg-top" style={{ backgroundImage: `url(${banner})`, }}>
             <div className="bg-black bg-opacity-40 w-2/3 mx-auto text-center p-4 space-y-4">

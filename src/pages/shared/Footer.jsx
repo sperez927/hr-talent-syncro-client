@@ -8,8 +8,8 @@ const Footer = () => {
     return (
         <div className=" text-black py-10 mt-16 font-semibold bg-transparent">
             <div className="flex flex-col md:items-start items-center">
-                    <img src={logo} className="font-bold text-3xl w-56" alt="Logo"></img>
-                    <p className="text-lg mt-2">Innovative. Empowering. Support.</p>
+                <img src={logo} className="font-bold text-3xl w-56" alt="Logo"></img>
+                <p className="text-lg mt-2">Innovative. Empowering. Support.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 items-start mb-6">
                 <div className="col-span-3 text-center space-y-6 md:text-start mt-4">
